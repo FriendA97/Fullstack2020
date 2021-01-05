@@ -1,8 +1,14 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/Personform";
 import Persons from "./components/Persons";
+import {
+  getAllPersons,
+  createPerson,
+  deletePerson,
+  updatePerson,
+} from "./services";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,22 +16,53 @@ const App = () => {
   const [newPhone, setNewPhone] = useState("");
   const [filterInput, setFilterInput] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    const getFetchUrl = () => {
-      return "http://localhost:3001/persons";
-    };
-    axios.get(getFetchUrl()).then((response) => setPersons(response.data));
+    getAllPersons().then((persons) => setPersons(persons));
   }, []);
 
   const handleAddPerson = (e) => {
     e.preventDefault();
     if (persons.find((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
+      window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      const changedPerson = {
+        ...persons.find((person) => person.name === newName),
+        number: newPhone,
+      };
+      updatePerson(changedPerson)
+        .then((personid) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== personid.id ? person : changedPerson
+            )
+          );
+          setNewName("");
+          setNewPhone("");
+          setSuccessMessage("Changed phone number successfully");
+          setTimeout(() => setSuccessMessage(null), 3000);
+        })
+        .catch((error) => {
+          setErrorMessage(
+            `the person ${changedPerson.name} was already deleted from server`
+          );
+          setPersons(
+            persons.filter((person) => person.id !== changedPerson.id)
+          );
+          setTimeout(() => setErrorMessage(null), 3000);
+        });
     } else {
-      setPersons(persons.concat({ name: newName, number: newPhone }));
+      const newPerson = { name: newName, number: newPhone };
+      createPerson(newPerson).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+      });
       setNewName("");
       setNewPhone("");
+      setSuccessMessage(`Added ${newPerson.name}`);
+      setTimeout(() => setSuccessMessage(null), 3000);
     }
   };
 
@@ -35,6 +72,13 @@ const App = () => {
 
   const handlePhoneChange = (e) => {
     setNewPhone(e.target.value);
+  };
+
+  const handleDeletePerson = (name, id) => {
+    window.confirm(`Delete ${name}`);
+    deletePerson(id).then((deletedPerson) =>
+      setPersons(persons.filter((person) => person.id !== id))
+    );
   };
 
   const hanldeFilterInputChange = (e) => {
@@ -49,6 +93,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {successMessage ? (
+        <Notification message={successMessage} type="success" />
+      ) : errorMessage ? (
+        <Notification message={errorMessage} type="error" />
+      ) : null}
       <Filter
         value={filterInput}
         handleChange={hanldeFilterInputChange}
@@ -62,7 +111,8 @@ const App = () => {
         name={newName}
         number={newPhone}
       />
-      <Persons persons={persons} />
+      <h2>Numbers</h2>
+      <Persons handleDeletePerson={handleDeletePerson} persons={persons} />
     </div>
   );
 };
