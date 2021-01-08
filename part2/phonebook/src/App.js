@@ -56,9 +56,11 @@ const App = () => {
         });
     } else {
       const newPerson = { name: newName, number: newPhone };
-      createPerson(newPerson).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-      });
+      createPerson(newPerson)
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+        })
+        .catch((error) => setErrorMessage(error.response.data));
       setNewName("");
       setNewPhone("");
       setSuccessMessage(`Added ${newPerson.name}`);
