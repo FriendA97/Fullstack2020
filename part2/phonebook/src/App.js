@@ -59,12 +59,15 @@ const App = () => {
       createPerson(newPerson)
         .then((newPerson) => {
           setPersons(persons.concat(newPerson));
+          setSuccessMessage(`Added ${newPerson.name}`);
+          setTimeout(() => setSuccessMessage(null), 3000);
         })
-        .catch((error) => setErrorMessage(error.response.data));
+        .catch((error) => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => setErrorMessage(null), 3000);
+        });
       setNewName("");
       setNewPhone("");
-      setSuccessMessage(`Added ${newPerson.name}`);
-      setTimeout(() => setSuccessMessage(null), 3000);
     }
   };
 
