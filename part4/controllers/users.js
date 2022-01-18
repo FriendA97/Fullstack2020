@@ -1,13 +1,16 @@
 const bcrypt = require("bcryptjs");
-const usersRouter = require("express").Router();
 const User = require("../models/user");
 
-usersRouter.get("/", async (req, res) => {
-  const users = await User.find({}).populate("blogs");
-  res.json(users);
-});
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({}).populate("blogs");
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+};
 
-usersRouter.post("/", async (req, res, next) => {
+const postUser = async (req, res, next) => {
   try {
     const body = req.body;
     const existedUser = await User.find({ username: body.username });
@@ -30,9 +33,9 @@ usersRouter.post("/", async (req, res, next) => {
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
-});
+};
 
-module.exports = usersRouter;
+module.exports = { getUsers, postUser };

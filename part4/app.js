@@ -4,9 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
-const blogsRouter = require("./controllers/blogs");
-const usersRouter = require("./controllers/users");
-const loginRouter = require("./controllers/login");
+const blogsRouter = require("./routes/blogs");
+const usersRouter = require("./routes/users");
+const loginRouter = require("./routes/login");
 const app = express();
 
 logger.info("Connecting to ", config.MONGODB_URI);
