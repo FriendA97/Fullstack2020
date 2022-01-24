@@ -52,15 +52,8 @@ const postBlog = async (req, res, next) => {
 
 const deleteBlog = async (req, res, next) => {
   try {
-    const token = req.token;
     const blog = await Blog.findById(req.params.id);
-    const decodeToken = jwt.decode(token, process.env.SECRET_KEY);
-
-    if (!token || !decodeToken.id) {
-      return res.status(401).json({ error: "Invalid token" });
-    }
-    const user = await User.findById(decodeToken.id);
-
+    const user = req.user;
     if (blog.user.toString() === user._id.toString()) {
       const newUserBlogs = user.blogs.filter(
         (id) => id.toString() !== req.params.id
