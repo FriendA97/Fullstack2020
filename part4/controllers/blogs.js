@@ -26,15 +26,8 @@ const getBlogById = async (req, res, next) => {
 const postBlog = async (req, res, next) => {
   try {
     const body = req.body;
-    const token = req.token;
     console.log(req.get("Authorization"));
-    const decodeToken = jwt.decode(token, process.env.SECRET_KEY);
-
-    if (!token || !decodeToken.id) {
-      return res.status(401).json({ error: "Invalid token" });
-    }
-
-    const user = await User.findById(decodeToken.id);
+    const user = req.user;
 
     if (!body.title || !body.url) {
       return res.status(400).end();
