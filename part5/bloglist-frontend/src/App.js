@@ -100,16 +100,18 @@ const App = () => {
         <Togglable buttonLabel="new blog">
           <BlogForm createBlog={handleCreateBlog} />
         </Togglable>
-        {blogs.map((blog) => (
-          <Blog
-            blogs={blogs}
-            setBlogs={setBlogs}
-            key={blog.id}
-            blog={blog}
-            update={blogService.update}
-            deleteBlog={blogService.deleteBlog}
-          />
-        ))}
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              blogs={blogs}
+              setBlogs={setBlogs}
+              key={blog.id}
+              blog={blog}
+              update={blogService.update}
+              deleteBlog={blogService.deleteBlog}
+            />
+          ))}
       </>
     );
   };

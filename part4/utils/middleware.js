@@ -20,7 +20,7 @@ const tokenExtractor = (req, res, next) => {
 
 const userExtractor = async (req, res, next) => {
   const token = req.token;
-  if (req.method === "POST" || req.method === "PUT") {
+  if (req.method === "POST" || req.method === "DELETE") {
     const decodeToken = jwt.decode(token, process.env.SECRET_KEY);
     if (!token || !decodeToken.id) {
       return res.status(401).json({ error: "Invalid token" });
