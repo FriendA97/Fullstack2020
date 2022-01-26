@@ -32,17 +32,24 @@ const Blog = ({ blog, update, setBlogs, blogs, deleteBlog }) => {
     }
   };
 
-  console.log(blog);
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}
-        <button onClick={showDetails}>{open ? "hide" : "view"}</button>
+        <span data-testid="blog-title">{blog.title}</span>
+        <span data-testid="blog-author">{blog.author}</span>
+        <button data-testid="blog-expand-btn" onClick={showDetails}>
+          {open ? "hide" : "view"}
+        </button>
         {open && (
           <>
-            <p>{blog.url}</p>
-            <span>likes {blog.likes}</span>
-            <button onClick={increaseLike}>like</button>
+            <p data-testid={`blog-url-${blog.id}`}>{blog.url}</p>
+            <span data-testid={`blog-likes-${blog.id}`}>{blog.likes}</span>
+            <button
+              data-testid={`blog-likes-counter-${blog.id}`}
+              onClick={increaseLike}
+            >
+              like
+            </button>
             <p>{blog.user.name ? blog.user.name : blog.user.username}</p>
             <button onClick={deleteBlogById}>remove</button>
           </>

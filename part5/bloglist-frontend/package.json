@@ -36,6 +36,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
-    "eslint-plugin-jest": "^26.0.0"
+    "eslint-plugin-jest": "^26.0.0",
+    "mutationobserver-shim": "^0.3.7"
   }
 }
