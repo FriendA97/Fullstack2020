@@ -11,7 +11,6 @@ const api = supertest(app);
 beforeEach(async () => {
   await Blog.deleteMany({});
   await User.deleteMany({});
-  await User.deleteMany({});
   const passwordHash = await bcrypt.hash("test", 10);
   const user = new User({ username: "ann", passwordHash });
   await user.save();

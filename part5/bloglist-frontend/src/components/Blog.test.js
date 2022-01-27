@@ -32,7 +32,7 @@ test("render blog with its title and author without details", () => {
       deleteBlog={mockHandler}
     />
   );
-  const title = blog.queryByTestId("blog-title");
+  const title = blog.queryByTestId("blog-title-0");
   const author = blog.queryByTestId("blog-author");
   const likes = blog.queryByTestId(`blog-likes-${blogData.id}`);
 
@@ -53,8 +53,8 @@ test("render url and likes of blog when button is clicked", () => {
   );
   const button = blog.queryByTestId("blog-expand-btn");
   fireEvent.click(button);
-  const likes = blog.queryByTestId(`blog-likes-${blogData.id}`);
-  const url = blog.queryByTestId(`blog-url-${blogData.id}`);
+  const likes = blog.queryByTestId("blog-likes-0");
+  const url = blog.queryByTestId("blog-url-0");
   expect(likes).toBeInTheDocument();
   expect(url).toBeInTheDocument();
 });
@@ -71,7 +71,7 @@ test("like button is called when clicked", async () => {
     />
   );
 
-  const button = blog.queryByTestId("blog-expand-btn");
+  const button = blog.queryByTestId("blog-expand-btn-0");
   fireEvent.click(button);
   const likesCounter = blog.queryByText("like");
   fireEvent.click(likesCounter);

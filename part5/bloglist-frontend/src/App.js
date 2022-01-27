@@ -70,6 +70,7 @@ const App = () => {
           <div>
             username
             <input
+              data-testid="login-username-input"
               type="text"
               value={username}
               name="Username"
@@ -79,13 +80,16 @@ const App = () => {
           <div>
             password
             <input
+              data-testid="login-password-input"
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">login</button>
+          <button data-testid="login-btn" type="submit">
+            login
+          </button>
         </form>
       </>
     );
@@ -96,15 +100,18 @@ const App = () => {
       <>
         <h2>blogs</h2>
         <span>{user.name ? user.name : user.username} logged in</span>
-        <button onClick={handleLogout}>log out</button>
+        <button data-testid="logout-btn" onClick={handleLogout}>
+          log out
+        </button>
         <Togglable buttonLabel="new blog">
           <BlogForm createBlog={handleCreateBlog} />
         </Togglable>
         {blogs
           .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
+          .map((blog, index) => (
             <Blog
               blogs={blogs}
+              index={index}
               setBlogs={setBlogs}
               key={blog.id}
               blog={blog}

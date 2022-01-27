@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, update, setBlogs, blogs, deleteBlog }) => {
+const Blog = ({ blog, update, setBlogs, blogs, index, deleteBlog }) => {
   const [open, setOpen] = useState(false);
   const blogStyle = {
     paddingTop: 10,
@@ -33,25 +33,30 @@ const Blog = ({ blog, update, setBlogs, blogs, deleteBlog }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div data-testid={`blog-${index}`} style={blogStyle}>
       <div>
-        <span data-testid="blog-title">{blog.title}</span>
+        <span data-testid={`blog-title-${blog.title}`}>{blog.title}</span>
         <span data-testid="blog-author">{blog.author}</span>
-        <button data-testid="blog-expand-btn" onClick={showDetails}>
+        <button data-testid={`blog-expand-btn-${index}`} onClick={showDetails}>
           {open ? "hide" : "view"}
         </button>
         {open && (
           <>
-            <p data-testid={`blog-url-${blog.id}`}>{blog.url}</p>
-            <span data-testid={`blog-likes-${blog.id}`}>{blog.likes}</span>
+            <p data-testid={`blog-url-${index}`}>{blog.url}</p>
+            <span data-testid={`blog-likes-${index}`}>{blog.likes}</span>
             <button
-              data-testid={`blog-likes-counter-${blog.id}`}
+              data-testid={`blog-like-counter-${index}`}
               onClick={increaseLike}
             >
               like
             </button>
             <p>{blog.user.name ? blog.user.name : blog.user.username}</p>
-            <button onClick={deleteBlogById}>remove</button>
+            <button
+              data-testid={`blog-delete-${index}`}
+              onClick={deleteBlogById}
+            >
+              remove
+            </button>
           </>
         )}
       </div>
@@ -63,6 +68,7 @@ Blog.propTypes = {
   blogs: PropTypes.array,
   setBlogs: PropTypes.func.isRequired,
   key: PropTypes.string,
+  index: PropTypes.number.isRequired,
   blog: PropTypes.object.isRequired,
   update: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,

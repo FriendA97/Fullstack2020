@@ -6,15 +6,13 @@ const initalBlogs = [
     title: "A good book",
     author: "An Nguyen",
     url: "http://abcvvdav.com",
-    likes: 10,
-    id: "5ff8d4208f175a432474ea78",
+    likes: 0,
   },
   {
-    title: "A good book",
+    title: "abc",
     author: "An Nguyen",
-    url: "http://abcvvdav.com",
-    likes: 10,
-    id: "5ffb0b1749cce33bec41e86e",
+    url: "www.google.com",
+    likes: 5,
   },
 ];
 

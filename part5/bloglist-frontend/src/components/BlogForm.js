@@ -8,7 +8,6 @@ const BlogForm = ({ createBlog }) => {
   const handleCreateBlog = (e) => {
     e.preventDefault();
     createBlog({ title, author, url });
-    console.log(createBlog.mock.calls);
     setTitle("");
     setAuthor("");
     setUrl("");
