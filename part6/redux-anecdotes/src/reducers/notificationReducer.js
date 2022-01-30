@@ -1,15 +1,15 @@
 const inintalState = "";
 
-const voteNoti = (content) => {
-  return {
-    type: "VOTE_MESSAGE",
-    payload: content,
+const createNoti = (content, delay) => {
+  return (dispatch) => {
+    dispatch(setNoti(content));
+    setTimeout(() => dispatch(removeNoti()), delay);
   };
 };
 
-const createNoti = (content) => {
+const setNoti = (content) => {
   return {
-    type: "CREATE_MESSAGE",
+    type: "SET_MESSAGE",
     payload: content,
   };
 };
@@ -21,10 +21,8 @@ const removeNoti = () => {
 const reducer = (state = inintalState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "VOTE_MESSAGE":
-      return `You voted for ${payload}`;
-    case "CREATE_MESSAGE":
-      return `You created ${payload}`;
+    case "SET_MESSAGE":
+      return payload;
     case "CLEAR_MESSAGE":
       return payload;
     default:
@@ -32,4 +30,4 @@ const reducer = (state = inintalState, action) => {
   }
 };
 
-export { voteNoti, createNoti, removeNoti, reducer };
+export { setNoti, createNoti, removeNoti, reducer };
